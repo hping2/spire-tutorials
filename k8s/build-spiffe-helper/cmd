@@ -1,1 +1,8 @@
 docker build -t spiffe-helper:latest-local .
+
+After build, you need to push the image to minikube, otherwise minikube can not load this image:
+https://minikube.sigs.k8s.io/docs/handbook/pushing/
+minikube cache add spiffe-helper:latest-local
+
+Same thing for kind.
+
