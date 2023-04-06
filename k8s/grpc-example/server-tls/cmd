@@ -1,0 +1,5 @@
+  kubectl cp client01-8d6c56d44-fftqj:/run/client01/certs/svid.key svid.key -c client01 -n client01
+  kubectl cp client01-8d6c56d44-fftqj:/run/client01/certs/svid.crt svid.crt -c client01 -n client01
+  kubectl cp client01-8d6c56d44-fftqj:/run/client01/certs/root.crt root.crt -c client01 -n client01
+
+# I got cert key etc from SPIFFIE workload
