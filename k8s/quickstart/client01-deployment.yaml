@@ -32,8 +32,8 @@ spec:
               readOnly: false
         - name: spiffe-helper-sidecar
           image: spiffe-helper:latest-local
-          command: ["sleep"]
-          args: [ "4000" ]
+          command: ["/opt/helper/spiffe-helper"]
+          args: [ "-config", "/run/spiffe-helper/config/helper.conf" ]
           volumeMounts:
             - name: spiffe-helper-config
               mountPath: /run/spiffe-helper/config
@@ -42,6 +42,10 @@ spec:
             - name: spire-agent-socket
               mountPath: /run/spire/sockets
               readOnly: true
+            # Share folder where SVIDs are updated
+            - name: certs
+              mountPath: /run/client01/certs
+              readOnly: false
       volumes:
         - name: spire-agent-socket
           hostPath:
