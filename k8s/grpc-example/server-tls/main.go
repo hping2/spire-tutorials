@@ -16,13 +16,13 @@ import (
 
 func main() {
     // Load the server certificate and its key
-    serverCert, err := tls.LoadX509KeyPair("server.pem", "server.key")
+    serverCert, err := tls.LoadX509KeyPair("svid.crt", "svid.key")
     if err != nil {
         log.Fatalf("Failed to load server certificate and key. %s.", err)
     }
 
     // Load the CA certificate
-    trustedCert, err := ioutil.ReadFile("cacert.pem")
+    trustedCert, err := ioutil.ReadFile("root.crt")
     if err != nil {
         log.Fatalf("Failed to load trusted certificate. %s.", err)
     }
