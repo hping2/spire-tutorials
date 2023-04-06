@@ -16,13 +16,13 @@ func main() {
 	ctx := context.Background()
 
     // Load the client certificate and its key
-    clientCert, err := tls.LoadX509KeyPair("client.pem", "client.key")
+    clientCert, err := tls.LoadX509KeyPair("svid.crt", "svid.key")
     if err != nil {
         log.Fatalf("Failed to load client certificate and key. %s.", err)
     }
 
     // Load the CA certificate
-    trustedCert, err := ioutil.ReadFile("cacert.pem")
+    trustedCert, err := ioutil.ReadFile("root.crt")
     if err != nil {
         log.Fatalf("Failed to load trusted certificate. %s.", err)
     }
@@ -39,6 +39,7 @@ func main() {
         RootCAs:      certPool,
         MinVersion:   tls.VersionTLS13,
         MaxVersion:   tls.VersionTLS13,
+		InsecureSkipVerify: true,
     }
 
     // Create a new TLS credentials based on the TLS configuration
@@ -63,16 +64,6 @@ func main() {
         issueRequest(ctx,greeterClient)
         time.Sleep(interval)
     }
-
-    // Create the gRPC client
-    //client := rpc.NewDemoServiceClient(conn)
-    //response, err := client.SayHello(context.Background(), request)
-    //if err != nil {
-    //    log.Fatalf("Failed to receive response. %s.", err)
-    //}
-
-    // Print out response from server
-    //fmt.Println(response.Response)
 }
 
 func issueRequest(ctx context.Context, c helloworld.GreeterClient) {

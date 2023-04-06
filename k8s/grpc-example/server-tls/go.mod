@@ -1,10 +1,10 @@
-module main.go
+module server
 
 go 1.20
 
 require (
 	google.golang.org/grpc v1.54.0
-	google.golang.org/grpc/examples v0.0.0-20230406001257-bfb57b8b4953
+	google.golang.org/grpc/examples v0.0.0-20230406202959-3489bb7d5174
 )
 
 require (

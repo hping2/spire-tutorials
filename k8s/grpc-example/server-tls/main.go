@@ -62,6 +62,7 @@ func main() {
     helloworld.RegisterGreeterServer(server, greeter{}) // Register the demo service
 
     // Start the gRPC server
+    log.Println("Serving on", listener.Addr())
     err = server.Serve(listener)
     if err != nil {
         log.Fatalf("Failed to start gRPC server. %s.", err)
