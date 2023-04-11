@@ -28,7 +28,7 @@ spec:
               readOnly: true
             # Share folder where SVIDs are updated
             - name: certs
-              mountPath: /run/client02/certs
+              mountPath: /run/certs
               readOnly: false
         - name: spiffe-helper-sidecar
           image: spiffe-helper:latest-local
@@ -44,7 +44,7 @@ spec:
               readOnly: true
             # Share folder where SVIDs are updated
             - name: certs
-              mountPath: /run/client02/certs
+              mountPath: /run/certs
               readOnly: false
       volumes:
         - name: spire-agent-socket

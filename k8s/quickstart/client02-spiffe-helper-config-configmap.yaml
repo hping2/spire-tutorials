@@ -13,7 +13,7 @@ data:
     cmd = ""
     cmdArgs = ""
     # Folder to save SVID
-    certDir = "/run/client02/certs"
+    certDir = "/run/certs"
     renewSignal = ""
     # Files to store SVID in PEM format
     svidFileName = "svid.crt"

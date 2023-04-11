@@ -16,13 +16,13 @@ func main() {
 	ctx := context.Background()
 
     // Load the client certificate and its key
-    clientCert, err := tls.LoadX509KeyPair("svid.crt", "svid.key")
+    clientCert, err := tls.LoadX509KeyPair("/run/certs/svid.crt", "/run/certs/svid.key")
     if err != nil {
         log.Fatalf("Failed to load client certificate and key. %s.", err)
     }
 
     // Load the CA certificate
-    trustedCert, err := ioutil.ReadFile("root.crt")
+    trustedCert, err := ioutil.ReadFile("/run/certs/root.crt")
     if err != nil {
         log.Fatalf("Failed to load trusted certificate. %s.", err)
     }
