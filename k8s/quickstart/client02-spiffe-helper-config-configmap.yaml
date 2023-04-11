@@ -1,0 +1,22 @@
+# SPIFFE Helper config file. It is configured to send reload signals to postgres
+# database every time SVID rotates
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name:  spiffe-helper-config
+  namespace: client02
+data: 
+  helper.conf: |
+    # Address to agent socket
+    agentAddress = "/run/spire/sockets/agent.sock"
+    # Script that will reload certificates when it change
+    cmd = ""
+    cmdArgs = ""
+    # Folder to save SVID
+    certDir = "/run/client02/certs"
+    renewSignal = ""
+    # Files to store SVID in PEM format
+    svidFileName = "svid.crt"
+    svidKeyFileName = "svid.key"
+    svidBundleFileName = "root.crt"
+

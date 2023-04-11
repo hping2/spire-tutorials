@@ -91,7 +91,7 @@ func main() {
 
     greeterClient := helloworld.NewGreeterClient(conn)
 	const interval = time.Second * 10
-    log.Println("Issuing requests every %s...", interval)
+    log.Printf("Issuing requests every 10 seconds ...")
     for {
         issueRequest(ctx,greeterClient)
         time.Sleep(interval)

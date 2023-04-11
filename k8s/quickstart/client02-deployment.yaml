@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client02
+  namespace: client02
+  labels:
+    app: client02
+spec:
+  selector:
+    matchLabels:
+      app: client02
+  template:
+    metadata:
+      labels:
+        app: client02
+    spec:
+      hostPID: true
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: client02
+          image: golang:1.20
+          command: ["sleep"]
+          args: [ "43200" ]
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+              readOnly: true
+            # Share folder where SVIDs are updated
+            - name: certs
+              mountPath: /run/client02/certs
+              readOnly: false
+        - name: spiffe-helper-sidecar
+          image: spiffe-helper:latest-local
+          command: ["/opt/helper/spiffe-helper"]
+          args: [ "-config", "/run/spiffe-helper/config/helper.conf" ]
+          volumeMounts:
+            - name: spiffe-helper-config
+              mountPath: /run/spiffe-helper/config
+              readOnly: true
+            # Mount SPIRE-Agent socket
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+              readOnly: true
+            # Share folder where SVIDs are updated
+            - name: certs
+              mountPath: /run/client02/certs
+              readOnly: false
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: Directory
+        - name: spiffe-helper-config
+          configMap:
+            name: spiffe-helper-config
+        - name: certs
+          emptyDir: {}
