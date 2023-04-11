@@ -12,11 +12,15 @@ import (
 	"google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
+var serverID = "some server"
 func main() {
 	ctx := context.Background()
 
     // Load the client certificate and its key
     clientCert, err := tls.LoadX509KeyPair("/run/certs/svid.crt", "/run/certs/svid.key")
+
+	// log.Printf("client cert %s", *(clientCert.Leaf).Subject)
+
     if err != nil {
         log.Fatalf("Failed to load client certificate and key. %s.", err)
     }
@@ -54,6 +58,8 @@ func main() {
 					return err
 				}
 				certs[i] = cert
+				log.Printf("Server cert %s ", cert.URIs[0])
+				serverID = cert.URIs[0].String()
 			}
 
 			opts := x509.VerifyOptions{
@@ -108,6 +114,5 @@ func issueRequest(ctx context.Context, c helloworld.GreeterClient) {
         return
     }
 
-    serverID := "SOME-Server"
     log.Printf("%s said %s", serverID, resp.Message)
 }
