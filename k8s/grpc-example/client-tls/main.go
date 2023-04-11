@@ -78,7 +78,7 @@ func main() {
     cred := credentials.NewTLS(tlsConfig)
 
     // Dial the gRPC server with the given credentials
-    conn, err := grpc.Dial("localhost:8443", grpc.WithTransportCredentials(cred))
+    conn, err := grpc.Dial("localhost:5443", grpc.WithTransportCredentials(cred))
     if err != nil {
         log.Fatal(err)
     }

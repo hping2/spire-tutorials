@@ -45,8 +45,8 @@ func main() {
     // Create a new TLS credentials based on the TLS configuration
     cred := credentials.NewTLS(tlsConfig)
 
-    // Create a listener that listens to localhost port 8443
-    listener, err := net.Listen("tcp", "localhost:8443")
+    // Create a listener that listens to localhost port 5443
+    listener, err := net.Listen("tcp", "localhost:5443")
     if err != nil {
         log.Fatalf("Failed to start listener. %s.", err)
     }
