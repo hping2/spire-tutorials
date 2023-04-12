@@ -2,7 +2,7 @@
 FROM golang:1.17-alpine as helper-builder
 WORKDIR /service
 RUN apk add build-base git
-RUN git clone -b upgrade-helper https://github.com/marcosdy/spiffe-helper.git .
+RUN git clone -b v0.6.0 https://github.com/spiffe/spiffe-helper.git .
 RUN go build -o /service/spiffe-helper ./cmd/spiffe-helper
 
 FROM alpine AS spiffe-helper
