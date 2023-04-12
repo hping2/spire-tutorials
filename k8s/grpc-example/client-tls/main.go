@@ -2,24 +2,24 @@ package main
 
 import (
     "context"
-	"time"
+    "time"
     "crypto/tls"
     "crypto/x509"
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials"
     "io/ioutil"
     "log"
-	"google.golang.org/grpc/examples/helloworld/helloworld"
+    "google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
 var serverID = "some server"
 func main() {
-	ctx := context.Background()
+    ctx := context.Background()
 
     // Load the client certificate and its key
     clientCert, err := tls.LoadX509KeyPair("/run/certs/svid.crt", "/run/certs/svid.key")
 
-	// log.Printf("client cert %s", *(clientCert.Leaf).Subject)
+    // log.Printf("client cert %s", *(clientCert.Leaf).Subject)
 
     if err != nil {
         log.Fatalf("Failed to load client certificate and key. %s.", err)
@@ -43,41 +43,41 @@ func main() {
         RootCAs:      certPool,
         MinVersion:   tls.VersionTLS13,
         MaxVersion:   tls.VersionTLS13,
-		InsecureSkipVerify: true,
-		VerifyPeerCertificate: func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
-			// Code copy/pasted and adapted from
-			// https://github.com/golang/go/blob/81555cb4f3521b53f9de4ce15f64b77cc9df61b9/src/crypto/tls/handshake_client.go#L327-L344, but adapted to skip the hostname verification.
-			// See https://github.com/golang/go/issues/21971#issuecomment-412836078.
+        InsecureSkipVerify: true,
+        VerifyPeerCertificate: func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
+            // Code copy/pasted and adapted from
+            // https://github.com/golang/go/blob/81555cb4f3521b53f9de4ce15f64b77cc9df61b9/src/crypto/tls/handshake_client.go#L327-L344, but adapted to skip the hostname verification.
+            // See https://github.com/golang/go/issues/21971#issuecomment-412836078.
 
-			// If this is the first handshake on a connection, process and
-			// (optionally) verify the server's certificates.
-			certs := make([]*x509.Certificate, len(rawCerts))
-			for i, asn1Data := range rawCerts {
-				cert, err := x509.ParseCertificate(asn1Data)
-				if err != nil {
-					return err
-				}
-				certs[i] = cert
-				log.Printf("Server cert %s ", cert.URIs[0])
-				serverID = cert.URIs[0].String()
-			}
+            // If this is the first handshake on a connection, process and
+            // (optionally) verify the server's certificates.
+            certs := make([]*x509.Certificate, len(rawCerts))
+            for i, asn1Data := range rawCerts {
+                cert, err := x509.ParseCertificate(asn1Data)
+                if err != nil {
+                    return err
+                }
+                certs[i] = cert
+                log.Printf("Server cert %s ", cert.URIs[0])
+                serverID = cert.URIs[0].String()
+            }
 
-			opts := x509.VerifyOptions{
-				Roots:         certPool,
-				CurrentTime:   time.Now(),
-				DNSName:       "", // <- skip hostname verification
-				Intermediates: x509.NewCertPool(),
-			}
+            opts := x509.VerifyOptions{
+                Roots:         certPool,
+                CurrentTime:   time.Now(),
+                DNSName:       "", // <- skip hostname verification
+                Intermediates: x509.NewCertPool(),
+            }
 
-			for i, cert := range certs {
-				if i == 0 {
-					continue
-				}
-				opts.Intermediates.AddCert(cert)
-			}
-			_, err := certs[0].Verify(opts)
-			return err
-		},
+            for i, cert := range certs {
+                if i == 0 {
+                   continue
+                }
+                opts.Intermediates.AddCert(cert)
+            }
+            _, err := certs[0].Verify(opts)
+            return err
+        },
     }
 
     // Create a new TLS credentials based on the TLS configuration
@@ -96,7 +96,7 @@ func main() {
     }()
 
     greeterClient := helloworld.NewGreeterClient(conn)
-	const interval = time.Second * 10
+    const interval = time.Second * 10
     log.Printf("Issuing requests every 10 seconds ...")
     for {
         issueRequest(ctx,greeterClient)
