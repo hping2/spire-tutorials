@@ -62,8 +62,10 @@ func issueRequest(client *http.Client) {
 		return
 	}
 	serverCert := resp.TLS.PeerCertificates[0]
-	serverCommonName := serverCert.Subject.CommonName
-	fmt.Println("Server Certificate Common Name (CN):", serverCommonName)
+	//serverCommonName := serverCert.Subject.CommonName
+	//fmt.Println("Server Certificate Common Name (CN):", serverCommonName)
+	recvServerSpiffeID := serverCert.URIs[0].String()
+	fmt.Println("Server SPIFFEID:", recvServerSpiffeID)
 
 	// Check if the server certificate is verified by the trusted CA
 	// err = serverCert.VerifyHostname(serverCommonName)
@@ -81,12 +83,9 @@ func issueRequest(client *http.Client) {
 
 	// Convert the response body to a string and print it
 	bodyStr := string(body)
-	fmt.Print("Response Body:", bodyStr)
+	fmt.Println("Response Body:", bodyStr)
 
 	// check server SPIFFE ID
-	recvServerSpiffeID := serverCert.URIs[0].String()
-	fmt.Println("Server SPIFFEID:", recvServerSpiffeID)
-
 	expectedServerSpiffeID := "spiffe://example.org/ns/client01/sa/default"
 	result := strings.Compare(recvServerSpiffeID, expectedServerSpiffeID)
 	if result != 0 {
