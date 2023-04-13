@@ -14,14 +14,14 @@ func main() {
 		cert := r.TLS.PeerCertificates[0]
 
 		// Extract information from the client certificate
-		commonName := cert.Subject.CommonName
-		organization := cert.Subject.Organization
+		//commonName := cert.Subject.CommonName
+		//organization := cert.Subject.Organization
 		spiffeID := cert.URIs[0].String()
 
 		// Use the extracted information
-		fmt.Println("Client spiffeID:", spiffeID)
-		fmt.Println("Client Certificate Common Name (CN):", commonName)
-		fmt.Println("Client Certificate Organization (O):", organization)
+		fmt.Println("Connection from Client with spiffeID:", spiffeID)
+		//fmt.Println("Client Certificate Common Name (CN):", commonName)
+		//fmt.Println("Client Certificate Organization (O):", organization)
 		fmt.Fprint(w, "From Server: how are you?")
 	})
 
