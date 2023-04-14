@@ -20,9 +20,11 @@ func main() {
 
 		// Use the extracted information
 		fmt.Println("Connection from Client with spiffeID:", spiffeID)
+		res := "From Server: how are you?"
+		fmt.Println("Send response: :", res)
 		//fmt.Println("Client Certificate Common Name (CN):", commonName)
 		//fmt.Println("Client Certificate Organization (O):", organization)
-		fmt.Fprint(w, "From Server: how are you?")
+		fmt.Fprint(w, res)
 	})
 
 	// Load the server certificate and key

@@ -29,8 +29,8 @@ func main() {
 
 	// Configure the TLS settings for the client
 	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{clientCert},
-		//RootCAs:            caCertPool,
+		Certificates:       []tls.Certificate{clientCert},
+		RootCAs:            caCertPool,
 		InsecureSkipVerify: true,
 	}
 
@@ -43,7 +43,7 @@ func main() {
 
 	for {
 		issueRequest(client)
-		time.Sleep(time.Second * 3)
+		time.Sleep(time.Second * 5)
 	}
 }
 
@@ -65,7 +65,16 @@ func issueRequest(client *http.Client) {
 	//serverCommonName := serverCert.Subject.CommonName
 	//fmt.Println("Server Certificate Common Name (CN):", serverCommonName)
 	recvServerSpiffeID := serverCert.URIs[0].String()
-	fmt.Println("Server SPIFFEID:", recvServerSpiffeID)
+	fmt.Println("Read Server SPIFFEID:", recvServerSpiffeID)
+
+	// check server SPIFFE ID
+	expectedServerSpiffeID := "spiffe://example.org/ns/client01/sa/default"
+	fmt.Println("Expected    SPIFFEID:", expectedServerSpiffeID)
+	result := strings.Compare(recvServerSpiffeID, expectedServerSpiffeID)
+	if result != 0 {
+		fmt.Print("Server certificate bad")
+		return
+	}
 
 	// Check if the server certificate is verified by the trusted CA
 	// err = serverCert.VerifyHostname(serverCommonName)
@@ -85,13 +94,5 @@ func issueRequest(client *http.Client) {
 	bodyStr := string(body)
 	fmt.Println("Response Body:", bodyStr)
 
-	// check server SPIFFE ID
-	expectedServerSpiffeID := "spiffe://example.org/ns/client01/sa/default"
-	result := strings.Compare(recvServerSpiffeID, expectedServerSpiffeID)
-	if result != 0 {
-		fmt.Print("Server certificate bad")
-		return
-	}
-
-	fmt.Println("Server certificate verified successfully")
+	fmt.Println("Server certificate verified successfully\n")
 }
